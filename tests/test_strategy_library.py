@@ -4,7 +4,10 @@ from bigbulls_ai.market_data.models import Candle
 from bigbulls_ai.research.decision import assess_confluence
 from bigbulls_ai.research.models import StrategySignal
 from bigbulls_ai.research.strategy_library import (
-    evaluate_strategy_families, fair_value_gap, liquidity_sweep, support_resistance,
+    evaluate_strategy_families,
+    fair_value_gap,
+    liquidity_sweep,
+    support_resistance,
 )
 
 
