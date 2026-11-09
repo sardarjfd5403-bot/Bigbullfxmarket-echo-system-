@@ -57,7 +57,7 @@ def test_supervisor_submits_only_to_explicit_demo_broker():
 
 
 def test_supervisor_halts_if_account_is_not_demo():
-    now = datetime(2026, 11, 9, 12, tzinfo=timezone.utc)
+    now = datetime(2026, 11, 9, 12, tzinfo=UTC)
     broker = InMemoryDemoBroker(demo=False)
     supervisor = AutonomousSupervisor(FakeNews(), FakeTicks(), FakeInterpreter(), broker)
     result = supervisor.observe_once(["USD"], now, now, {}, {}, {})
