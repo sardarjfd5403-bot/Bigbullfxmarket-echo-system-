@@ -1,4 +1,4 @@
-"""Provider-neutral OHLCV candle model with strict timestamp/data validation."""
+"""Provider-neutral OHLCV candle and live tick models with strict validation."""
 
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -36,3 +36,24 @@ class Candle:
     @property
     def timestamp_utc(self) -> datetime:
         return self.timestamp.astimezone(UTC)
+
+
+@dataclass(frozen=True)
+class MarketTick:
+    symbol: str
+    timestamp: datetime
+    bid: float
+    ask: float
+    provider: str
+
+    def __post_init__(self) -> None:
+        if not self.symbol or not self.provider:
+            raise ValueError("symbol and provider are required")
+        if self.timestamp.tzinfo is None or self.timestamp.utcoffset() is None:
+            raise ValueError("tick timestamp must be timezone-aware")
+        if self.bid <= 0 or self.ask <= 0 or self.ask < self.bid:
+            raise ValueError("tick requires positive bid/ask and ask >= bid")
+
+    @property
+    def spread(self) -> float:
+        return self.ask - self.bid
