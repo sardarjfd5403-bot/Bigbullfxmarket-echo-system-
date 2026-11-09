@@ -40,11 +40,11 @@ def _number(value: object) -> float | None:
 class TradingEconomicsCalendar:
     """Read the documented TE economic-calendar endpoint using an API key."""
 
-    def __init__(self, api_key: str | None = None, naive_timezone: str = "UTC") -> None:
+    def __init__(self, api_key: str | None = None, naive_timezone: str | None = None) -> None:
         self.api_key = api_key or os.getenv("TRADING_ECONOMICS_API_KEY", "")
         if not self.api_key:
             raise ValueError("Set TRADING_ECONOMICS_API_KEY; never commit API keys")
-        self.timezone = ZoneInfo(naive_timezone)
+        self.timezone = ZoneInfo(naive_timezone or os.getenv("TRADING_ECONOMICS_NAIVE_TIMEZONE", "UTC"))
 
     def fetch_events(self, since: datetime, until: datetime) -> list[NewsEvent]:
         if since.tzinfo is None or until.tzinfo is None or until < since:
