@@ -81,7 +81,7 @@ class ShowMyTradesCalendar:
                 if raw_ts is not None:
                     scheduled = datetime.fromtimestamp(float(raw_ts), tz=UTC)
                 elif raw_time:
-                    scheduled = datetime.fromisoformat(str(raw_time).replace("Z", "+00:00"))
+                    scheduled = datetime.fromisoformat(str(raw_time))
                     if scheduled.tzinfo is None:
                         continue
                     scheduled = scheduled.astimezone(UTC)
