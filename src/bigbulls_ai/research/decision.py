@@ -29,21 +29,22 @@ def assess_confluence(
     latest: dict[str, StrategySignal] = {}
     for signals in signals_by_timeframe.values():
         for signal in signals:
-            if signal.direction in {"bullish", "bearish"}:
-                # Keep the strongest absolute observation for each family to avoid
-                # counting the same indicator repeatedly across correlated timeframes.
-                if signal.name not in latest or abs(signal.score) > abs(latest[signal.name].score):
-                    latest[signal.name] = signal
+            if signal.direction not in {"bullish", "bearish"}:
+                continue
+            current = latest.get(signal.name)
+            if current is None or abs(signal.score) > abs(current.score):
+                latest[signal.name] = signal
     if not latest:
         return DecisionAssessment("NO_TRADE", "neutral", 0.0, 0.0, (), (), ("No directional strategy evidence",))
-    bullish = tuple(sorted(name for name, s in latest.items() if s.direction == "bullish"))
-    bearish = tuple(sorted(name for name, s in latest.items() if s.direction == "bearish"))
+    bullish = tuple(sorted(name for name, signal in latest.items() if signal.direction == "bullish"))
+    bearish = tuple(sorted(name for name, signal in latest.items() if signal.direction == "bearish"))
     total = len(latest)
     winning = max(len(bullish), len(bearish))
     agreement = winning / total
     direction = "bullish" if len(bullish) > len(bearish) else "bearish" if len(bearish) > len(bullish) else "neutral"
-    signed = sum(s.score for s in latest.values())
-    score = min(1.0, abs(signed) / max(1.0, sum(abs(s.score) for s in latest.values())))
+    signed = sum(signal.score for signal in latest.values())
+    magnitude = sum(abs(signal.score) for signal in latest.values())
+    score = min(1.0, abs(signed) / max(1.0, magnitude))
     reasons = []
     if direction == "neutral":
         reasons.append("Strategy families are tied")
