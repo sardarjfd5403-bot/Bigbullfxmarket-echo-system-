@@ -69,31 +69,40 @@ class AutonomousSupervisor:
             return SupervisorResult("NO_TRADE", f"News interpretation failed: {type(exc).__name__}")
         orders = 0
         for signal in interpreted:
-            symbol = signal.instrument
-            if symbol not in symbols or symbol not in proposals_by_symbol:
+            if signal.direction not in {"bullish", "bearish"} or signal.probability < 0.90:
                 continue
-            conditions = conditions_by_symbol.get(symbol)
-            quantity = quantity_by_symbol.get(symbol, 0.0)
-            if conditions is None or quantity <= 0:
-                continue
-            if signal.direction not in {"bullish", "bearish"}:
-                continue
-            if signal.probability < 0.90:
-                continue
-            assessment: ExecutionAssessment = assess_execution_readiness(conditions)
-            if assessment.decision != "READY_FOR_PAPER":
-                continue
-            proposal = proposals_by_symbol[symbol]
-            if (signal.direction == "bullish" and proposal.side != "buy") or (
-                signal.direction == "bearish" and proposal.side != "sell"
-            ):
-                continue
-            try:
-                result = self.broker.submit_demo_order(proposal, quantity)
-            except Exception:
-                return SupervisorResult("NO_TRADE", "Demo broker submission failed", orders)
-            if result.accepted:
-                orders += 1
+            currency = signal.instrument.upper()
+            candidates = [symbol for symbol in symbols if symbol.upper() == currency]
+            if not candidates:
+                for candidate in symbols:
+                    pair = candidate.upper().replace("/", "")
+                    if pair.startswith(currency) or pair.endswith(currency):
+                        candidates.append(candidate)
+            for symbol in candidates:
+                pair = symbol.upper().replace("/", "")
+                pair_direction = signal.direction
+                if currency != pair and pair.endswith(currency):
+                    pair_direction = "bearish" if signal.direction == "bullish" else "bullish"
+                conditions = conditions_by_symbol.get(symbol)
+                quantity = quantity_by_symbol.get(symbol, 0.0)
+                if conditions is None or quantity <= 0:
+                    continue
+                assessment: ExecutionAssessment = assess_execution_readiness(conditions)
+                if assessment.decision != "READY_FOR_PAPER":
+                    continue
+                proposal = proposals_by_symbol.get(symbol)
+                if proposal is None:
+                    continue
+                if (pair_direction == "bullish" and proposal.side != "buy") or (
+                    pair_direction == "bearish" and proposal.side != "sell"
+                ):
+                    continue
+                try:
+                    result = self.broker.submit_demo_order(proposal, quantity)
+                except Exception:
+                    return SupervisorResult("NO_TRADE", "Demo broker submission failed", orders)
+                if result.accepted:
+                    orders += 1
         if orders:
             return SupervisorResult("PAPER_ORDERS_SUBMITTED", "All configured confirmation gates passed", orders)
         return SupervisorResult("OBSERVING", "No opportunity passed every confirmation gate")
