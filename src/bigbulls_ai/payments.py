@@ -19,6 +19,7 @@ from urllib.request import Request, urlopen
 TRON_API = "https://api.trongrid.io"
 USDT_TRC20_CONTRACT_HEX = "41a614f803b6fd780986a42c78ec9c7f77e6ded13c"
 USDT_DECIMALS = 6
+BIGBULLS_RECEIVING_WALLET = "TGHzwHhJ1XULyUmf6B8zf4djkyoeh6eiYY"
 
 
 class PaymentVerificationError(ValueError):
