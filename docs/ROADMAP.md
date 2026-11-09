@@ -1,18 +1,20 @@
 # Development Roadmap
 
-## Phase 0 — Foundation (current)
+## Phase 0 — Foundation
 - [x] Confirm product scope and platform targets
 - [x] Establish architecture and safety principles
-- [ ] Add CI, linting, type checks, and test skeleton
-- [ ] Add configuration schema and local developer guide
+- [x] Add CI, linting, and test skeleton
+- [x] Add safe configuration and risk validation foundation
 
-## Phase 1 — Market data
-- [ ] Instrument registry and canonical symbols
-- [ ] Provider adapter interfaces
-- [ ] Historical OHLCV ingestion
-- [ ] Live quote ingestion
-- [ ] Data validation, gap detection, and provenance
-- [ ] Economic calendar/news provider interfaces
+## Phase 1 — Market data contracts (in progress)
+- [x] Canonical sample instrument registry (Forex, gold, crypto, index)
+- [x] Provider-neutral OHLCV candle model with timezone and OHLC validation
+- [x] Historical and live data adapter interfaces
+- [x] Batch quality checks for empty, duplicate, out-of-order, and mixed-symbol data
+- [ ] Provider-specific historical and live adapters
+- [ ] Instrument metadata discovery (contract size, tick size, sessions, calendars)
+- [ ] Persistent historical storage and gap detection
+- [ ] Economic calendar and news provider interfaces
 
 ## Phase 2 — Research and strategy library
 - [ ] Technical indicators and volatility regimes
