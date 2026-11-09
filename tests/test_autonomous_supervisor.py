@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from bigbulls_ai.autonomous import AutonomousSupervisor
 from bigbulls_ai.execution_gate import MarketConditions
@@ -42,7 +42,7 @@ def conditions(now):
 
 
 def test_supervisor_submits_only_to_explicit_demo_broker():
-    now = datetime(2026, 11, 9, 12, tzinfo=timezone.utc)
+    now = datetime(2026, 11, 9, 12, tzinfo=UTC)
     broker = InMemoryDemoBroker()
     supervisor = AutonomousSupervisor(FakeNews(), FakeTicks(), FakeInterpreter(), broker)
     result = supervisor.observe_once(
