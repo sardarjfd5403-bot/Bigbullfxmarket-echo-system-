@@ -2,8 +2,8 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from bigbulls_ai.news import NewsEvent, assess_news, event_pair_bias
 from bigbulls_ai.execution_gate import MarketConditions, assess_execution_readiness
+from bigbulls_ai.news import NewsEvent, assess_news, event_pair_bias
 
 
 NOW = datetime(2026, 11, 9, 12, 0, tzinfo=UTC)
