@@ -3,6 +3,7 @@
 Secrets are read from environment variables. MT5 adapter imports its optional
 Windows-only package lazily and refuses non-demo accounts before order_send.
 """
+ # ruff: noqa: I001
 from __future__ import annotations
 
 import json
@@ -70,7 +71,7 @@ class TradingEconomicsCalendar:
         except (error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             raise RuntimeError("Trading Economics calendar request failed") from exc
         if not isinstance(payload, list):
-            raise RuntimeError("Unexpected Trading Economics calendar response")
+            raise TypeError("Unexpected Trading Economics calendar response")
         events: list[NewsEvent] = []
         for item in payload:
             if not isinstance(item, dict):
