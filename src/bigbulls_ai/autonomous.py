@@ -53,7 +53,7 @@ class AutonomousSupervisor:
         try:
             events = self.news_provider.fetch_events(since, until)
             ticks = self.tick_provider.latest_ticks(symbols)
-        except Exception as exc:
+        except (RuntimeError, ValueError, OSError) as exc:
             return SupervisorResult("NO_TRADE", f"Provider unavailable: {type(exc).__name__}")
         if not ticks:
             return SupervisorResult("NO_TRADE", "No live ticks received")
@@ -65,7 +65,7 @@ class AutonomousSupervisor:
                 result = self.interpreter.interpret(event)
                 result.validate()
                 interpreted.append(result)
-        except Exception as exc:
+        except (ValueError, TypeError, KeyError) as exc:
             return SupervisorResult("NO_TRADE", f"News interpretation failed: {type(exc).__name__}")
         orders = 0
         for signal in interpreted:
@@ -99,7 +99,7 @@ class AutonomousSupervisor:
                     continue
                 try:
                     result = self.broker.submit_demo_order(proposal, quantity)
-                except Exception:
+                except (RuntimeError, ValueError, OSError):
                     return SupervisorResult("NO_TRADE", "Demo broker submission failed", orders)
                 if result.accepted:
                     orders += 1
