@@ -1,7 +1,7 @@
 """Provider-neutral OHLCV candle model with strict timestamp/data validation."""
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 
 @dataclass(frozen=True)
@@ -35,4 +35,4 @@ class Candle:
 
     @property
     def timestamp_utc(self) -> datetime:
-        return self.timestamp.astimezone(timezone.utc)
+        return self.timestamp.astimezone(UTC)
