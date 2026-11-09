@@ -45,3 +45,11 @@ A no-key ShowMyTrades public-calendar adapter is available in `src/bigbulls_ai/f
 See [Free news and mobile setup](docs/FREE_NEWS_AND_MOBILE_SETUP.md) for usage, commercial-use boundaries, and limitations. The feed is calendar context only; it is not a real-time headline sentiment service.
 
 **Current execution status:** research/paper mode. Android MT5 does not host the desktop Python integration. No Exness demo order execution has been validated from the mobile-only setup, and live trading is not enabled.
+
+## Commercial launch assets
+- [One-time pricing and payment terms](commercial/pricing.json)
+- [Payment verification and customer fulfillment checklist](commercial/PAYMENT_FULFILLMENT.md)
+- [SEO keywords, metadata, landing-page wording and hashtags](commercial/SEO_LAUNCH_COPY.md)
+
+The operator CLI supports TRON USDT payment verification followed by lifetime license issuance:
+`bigbulls-license fulfill`. This is currently a local/manual operator workflow. A hosted checkout, customer portal, private object-storage delivery links, and public website deployment are not yet configured. Do not advertise automated instant downloads until those services are deployed and tested.
