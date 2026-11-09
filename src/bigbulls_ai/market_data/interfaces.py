@@ -1,7 +1,8 @@
 """Interfaces shared by historical and live market data providers."""
 
+from collections.abc import Sequence
 from datetime import datetime
-from typing import Protocol, Sequence
+from typing import Protocol
 
 from bigbulls_ai.market_data.models import Candle
 
