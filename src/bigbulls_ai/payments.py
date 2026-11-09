@@ -74,7 +74,7 @@ def _base58check_to_hex(address: str) -> str:
 def verify_usdt_trc20_payment(
     txid: str,
     expected_address: str,
-    expected_amount_usdt: Decimal = Decimal("199"),
+    expected_amount_usdt: Decimal = Decimal(199),
     min_confirmations: int = 20,
     api_key: str | None = None,
 ) -> VerifiedPayment:
