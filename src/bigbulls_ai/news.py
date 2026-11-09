@@ -74,3 +74,21 @@ def assess_news(event: NewsEvent, higher_is_better: bool | None = None) -> NewsA
         ("Numeric actual-versus-forecast surprise evaluated using indicator direction metadata",),
         event.impact in {"medium", "high"},
     )
+
+
+def event_pair_bias(
+    event: NewsEvent,
+    assessment: NewsAssessment,
+    base_currency: str,
+    quote_currency: str,
+) -> str:
+    """Return directional currency-pair context, not an executable trade signal."""
+    if not assessment.tradeable_context or assessment.sentiment not in {"positive", "negative"}:
+        return "neutral"
+    base, quote, currency = base_currency.upper(), quote_currency.upper(), event.currency.upper()
+    stronger = assessment.sentiment == "positive"
+    if currency == base:
+        return "bullish" if stronger else "bearish"
+    if currency == quote:
+        return "bearish" if stronger else "bullish"
+    return "unaffected"
