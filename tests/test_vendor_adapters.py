@@ -33,7 +33,7 @@ def test_te_calendar_maps_documented_event_fields(monkeypatch):
         "SourceURL": "https://example.test/source",
     }]
     monkeypatch.setattr(
-        "bigbulls_ai.vendor_adapters.urllib.request.urlopen",
+        "bigbulls_ai.vendor_adapters.request.urlopen",
         lambda request, timeout: FakeResponse(payload),
     )
     provider = TradingEconomicsCalendar("test-key")
