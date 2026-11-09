@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 from bigbulls_ai.backtesting import PriceObservation, run_news_event_study
-from bigbulls_ai.integrations import BrokerOrderResult, NewsModelOutput
+from bigbulls_ai.integrations import NewsModelOutput
 from bigbulls_ai.news import NewsEvent
 from bigbulls_ai.news_model import StructuredNewsInterpreter
 
