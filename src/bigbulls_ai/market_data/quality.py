@@ -1,7 +1,7 @@
 """Deterministic data-quality checks before research or trading consumes candles."""
 
-from dataclasses import dataclass
 from collections.abc import Sequence
+from dataclasses import dataclass
 
 from bigbulls_ai.market_data.models import Candle
 
@@ -13,7 +13,9 @@ class DataQualityReport:
     candle_count: int
 
 
-def validate_candle_batch(candles: Sequence[Candle], expected_symbol: str | None = None) -> DataQualityReport:
+def validate_candle_batch(
+    candles: Sequence[Candle], expected_symbol: str | None = None
+) -> DataQualityReport:
     errors: list[str] = []
     if not candles:
         return DataQualityReport(False, ("empty candle batch",), 0)
