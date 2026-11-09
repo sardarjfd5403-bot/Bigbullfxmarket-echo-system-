@@ -41,3 +41,14 @@ def test_expired_license_is_rejected(tmp_path):
     issue_license(private, license_file, "client", "starter", datetime.now(UTC) - timedelta(days=1))
     with pytest.raises(ValueError, match="expired"):
         verify_license(public, license_file)
+
+
+def test_lifetime_license_has_no_expiry(tmp_path):
+    private = tmp_path / "private.pem"
+    public = tmp_path / "public.pem"
+    license_file = tmp_path / "lifetime.license.json"
+    generate_keypair(private, public)
+    issue_license(private, license_file, "client-lifetime", "full")
+    payload = verify_license(public, license_file)
+    assert payload["customer_id"] == "client-lifetime"
+    assert payload["expires_at"] is None
