@@ -16,13 +16,17 @@
 - [ ] Persistent historical storage and gap detection
 - [ ] Economic calendar and news provider interfaces
 
-## Phase 2 — Research and strategy library
-- [ ] Technical indicators and volatility regimes
-- [ ] Price action and market structure
-- [ ] Explicitly defined SMC/ICT-inspired rules
-- [ ] Volume analysis with source-aware semantics
-- [ ] Macro/news context
-- [ ] Quantitative feature research
+## Phase 2 — Multi-timeframe research engine (foundation implemented)
+- [x] Timeframe registry from 1s through monthly (provider availability is explicit)
+- [x] EMA, RSI, ATR and realized-volatility primitives
+- [x] Candlestick price-action heuristics
+- [x] Basic range breakout / market-structure detection
+- [x] VSA-style volume/spread analysis with volume-unit safeguards
+- [x] Per-timeframe signals and combined confluence report
+- [ ] SMC/ICT rules: liquidity sweeps, equal highs/lows, FVG, order blocks, premium/discount
+- [ ] Session levels, VWAP, support/resistance and multi-session context
+- [ ] Fundamental/news sentiment features and economic calendar integration
+- [ ] Regime classification and feature research
 
 ## Phase 3 — Backtesting and evaluation
 - [ ] Event-driven backtester
