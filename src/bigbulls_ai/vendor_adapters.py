@@ -98,7 +98,7 @@ class TradingEconomicsCalendar:
                     published_at=release_time,
                     impact=impact,
                     actual=_number(item.get("Actual")),
-                    forecast=_number(item.get("Forecast")),
+                    forecast=_number(item.get("Forecast")) or _number(item.get("TEForecast")),
                     previous=_number(item.get("Previous")),
                     source="Trading Economics",
                     source_url=str(item.get("SourceURL") or "") or None,
