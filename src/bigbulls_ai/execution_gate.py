@@ -57,9 +57,11 @@ def assess_execution_readiness(
         reasons.append("Invalid ATR-normalized bar range")
     elif conditions.current_bar_range_atr > maximum_bar_range_atr:
         reasons.append("Extreme volatility: wait for range normalization and fresh confirmation")
-    if conditions.seconds_since_high_impact_release is not None:
-        if conditions.seconds_since_high_impact_release < news_cooldown_seconds:
-            reasons.append("High-impact news cooldown is active")
+    if (
+        conditions.seconds_since_high_impact_release is not None
+        and conditions.seconds_since_high_impact_release < news_cooldown_seconds
+    ):
+        reasons.append("High-impact news cooldown is active")
     if not conditions.price_confirmation:
         reasons.append("No post-news price confirmation")
     if not conditions.multi_timeframe_confirmation:
