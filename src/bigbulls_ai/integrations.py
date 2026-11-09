@@ -6,9 +6,10 @@ connecting real endpoints. No scraping, fabricated ticks, or live orders.
 """
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Protocol, Sequence
+from typing import Protocol
 
 from bigbulls_ai.market_data.models import Candle, MarketTick
 from bigbulls_ai.news import NewsEvent
