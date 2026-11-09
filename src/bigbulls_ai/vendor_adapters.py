@@ -50,7 +50,7 @@ class TradingEconomicsCalendar:
         if since.tzinfo is None or until.tzinfo is None or until < since:
             raise ValueError("since/until must be ordered timezone-aware timestamps")
         start = since.astimezone(UTC).date().isoformat()
-        end = until.astimezone(timezone.utc).date().isoformat()
+        end = until.astimezone(UTC).date().isoformat()
         query = urllib.parse.urlencode({"c": self.api_key, "f": "json"})
         url = (
             "https://api.tradingeconomics.com/calendar/country/All/"
@@ -77,8 +77,8 @@ class TradingEconomicsCalendar:
             release_time = datetime.fromisoformat(str(date_text))
             if release_time.tzinfo is None:
                 release_time = release_time.replace(tzinfo=self.timezone)
-            release_time = release_time.astimezone(timezone.utc)
-            if not since.astimezone(timezone.utc) <= release_time <= until.astimezone(timezone.utc):
+            release_time = release_time.astimezone(UTC)
+            if not since.astimezone(UTC) <= release_time <= until.astimezone(UTC):
                 continue
             importance = int(item.get("Importance") or 0)
             impact = {1: "low", 2: "medium", 3: "high"}.get(importance, "unknown")
@@ -157,7 +157,7 @@ class MT5DemoAdapter:
             ticks.append(
                 MarketTick(
                     symbol=symbol,
-                    timestamp=datetime.fromtimestamp(tick.time, tz=timezone.utc),
+                    timestamp=datetime.fromtimestamp(tick.time, tz=UTC),
                     bid=float(tick.bid),
                     ask=float(tick.ask),
                     provider="MT5-Exness-Demo",
