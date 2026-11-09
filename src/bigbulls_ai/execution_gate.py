@@ -22,6 +22,7 @@ class MarketConditions:
     calibration_valid: bool = False
     validation_sample_size: int = 0
     model_validation_date: datetime | None = None
+    news_direction_confirmed: bool = False
 
 
 @dataclass(frozen=True)
@@ -65,6 +66,8 @@ def assess_execution_readiness(
         reasons.append("Multi-timeframe confirmation missing")
     if not conditions.volume_confirmation:
         reasons.append("Volume/liquidity confirmation missing")
+    if not conditions.news_direction_confirmed:
+        reasons.append("News direction has not been confirmed against the traded instrument")
     probability = conditions.calibrated_probability
     if probability is None or not 0 <= probability <= 1:
         reasons.append("No valid calibrated probability supplied")
