@@ -10,7 +10,7 @@ import os
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from zoneinfo import ZoneInfo
 
 from bigbulls_ai.integrations import BrokerOrderResult
@@ -49,7 +49,7 @@ class TradingEconomicsCalendar:
     def fetch_events(self, since: datetime, until: datetime) -> list[NewsEvent]:
         if since.tzinfo is None or until.tzinfo is None or until < since:
             raise ValueError("since/until must be ordered timezone-aware timestamps")
-        start = since.astimezone(timezone.utc).date().isoformat()
+        start = since.astimezone(UTC).date().isoformat()
         end = until.astimezone(timezone.utc).date().isoformat()
         query = urllib.parse.urlencode({"c": self.api_key, "f": "json"})
         url = (
