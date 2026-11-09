@@ -51,13 +51,18 @@ class TradingEconomicsCalendar:
             raise ValueError("since/until must be ordered timezone-aware timestamps")
         start = since.astimezone(UTC).date().isoformat()
         end = until.astimezone(UTC).date().isoformat()
-        query = parse.urlencode({"c": self.api_key, "f": "json"})
+        query = parse.urlencode({"f": "json"})
         url = (
             "https://api.tradingeconomics.com/calendar/country/All/"
             f"{start}/{end}?{query}"
         )
         request = request.Request(
-            url, headers={"Accept": "application/json", "User-Agent": "BIGBULLS-AI/0.1"}
+            url,
+            headers={
+                "Accept": "application/json",
+                "Authorization": self.api_key,
+                "User-Agent": "BIGBULLS-AI/0.1",
+            },
         )
         try:
             with request.urlopen(request, timeout=15) as response:
