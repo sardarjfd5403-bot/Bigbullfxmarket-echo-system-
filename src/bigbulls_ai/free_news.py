@@ -132,9 +132,12 @@ class OfficialCentralBankRSSProvider:
             except (error.URLError, TimeoutError, ElementTree.ParseError) as exc:
                 raise RuntimeError(f"{source} RSS request failed") from exc
             for item in root.iter():
-                title_node = item.find("title")
-                link_node = item.find("link")
-                date_node = item.find("pubDate") or item.find("{http://www.w3.org/2005/Atom}updated")
+                if item.tag.rsplit("}", 1)[-1] not in {"item", "entry"}:
+                    continue
+                children = {child.tag.rsplit("}", 1)[-1]: child for child in item}
+                title_node = children.get("title")
+                link_node = children.get("link")
+                date_node = children.get("pubDate") or children.get("published") or children.get("updated")
                 if title_node is None or link_node is None:
                     continue
                 title = (title_node.text or "").strip()
