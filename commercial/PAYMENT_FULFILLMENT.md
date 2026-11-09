@@ -38,7 +38,6 @@ After installing the package, an authorized operator can verify a transaction an
 ```bash
 bigbulls-license fulfill \
   --txid CUSTOMER_TRANSACTION_HASH \
-  --wallet TGHzwHhJ1XULyUmf6B8zf4djkyoeh6eiYY \
   --amount 199 \
   --confirmations 20 \
   --private-key /secure/vendor-private.pem \
