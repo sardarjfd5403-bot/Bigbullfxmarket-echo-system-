@@ -6,8 +6,8 @@ import sqlite3
 from datetime import UTC, datetime
 from decimal import Decimal
 
-from bigbulls_ai.payments import BIGBULLS_RECEIVING_WALLET, verify_usdt_trc20_payment
 from bigbulls_ai.licensing import generate_keypair, issue_license, verify_license
+from bigbulls_ai.payments import BIGBULLS_RECEIVING_WALLET, verify_usdt_trc20_payment
 
 
 def main() -> None:
