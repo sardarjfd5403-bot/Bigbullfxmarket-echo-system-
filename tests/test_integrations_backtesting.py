@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from bigbulls_ai.backtesting import PriceObservation, run_news_event_study
 from bigbulls_ai.integrations import NewsModelOutput
@@ -7,7 +7,7 @@ from bigbulls_ai.news_model import StructuredNewsInterpreter
 
 
 def event():
-    now = datetime(2026, 11, 9, 12, tzinfo=timezone.utc)
+    now = datetime(2026, 11, 9, 12, tzinfo=UTC)
     return NewsEvent(
         "us-cpi-1", "US CPI", "USD", now, now, "high",
         actual=3.0, forecast=3.2, previous=3.1, source="fixture",
