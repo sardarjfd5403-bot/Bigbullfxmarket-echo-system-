@@ -14,4 +14,4 @@ def test_owner_wallet_decodes_to_tron_hex():
 def test_invalid_transaction_hash_rejected_before_network():
     with pytest.raises(PaymentVerificationError, match="64 hexadecimal"):
         from bigbulls_ai.payments import verify_usdt_trc20_payment
-        verify_usdt_trc20_payment("not-a-hash", "TGHzwHhJ1XULyUmf6B8zf4djkyoeh6eiYY", Decimal("199"))
+        verify_usdt_trc20_payment("not-a-hash", "TGHzwHhJ1XULyUmf6B8zf4djkyoeh6eiYY", Decimal(199))
