@@ -18,7 +18,7 @@ def main() -> None:
     issue.add_argument("--output", required=True)
     issue.add_argument("--customer-id", required=True)
     issue.add_argument("--tier", required=True)
-    issue.add_argument("--expires", required=True, help="ISO-8601 timestamp with timezone")
+    issue.add_argument("--expires", help="Optional ISO-8601 expiry; omit for lifetime access to this release")
     issue.add_argument("--device-id")
     issue.add_argument("--features", default="")
     verify = commands.add_parser("verify", help="Verify a signed license")
@@ -32,13 +32,15 @@ def main() -> None:
     elif args.command == "issue":
         data = issue_license(
             args.private_key, args.output, args.customer_id, args.tier,
-            datetime.fromisoformat(args.expires), args.device_id,
+            datetime.fromisoformat(args.expires) if args.expires else None, args.device_id,
             [item.strip() for item in args.features.split(",") if item.strip()],
         )
-        print(f"Issued {data['payload']['tier']} license for {data['payload']['customer_id']}")
+        expiry = data["payload"]["expires_at"] or "lifetime (purchased release)"
+        print(f"Issued {data['payload']['tier']} license for {data['payload']['customer_id']} — {expiry}")
     else:
         payload = verify_license(args.public_key, args.license, args.device_id)
-        print(f"VALID: {payload['customer_id']} / {payload['tier']} / expires {payload['expires_at']}")
+        expiry = payload["expires_at"] or "lifetime (purchased release)"
+        print(f"VALID: {payload['customer_id']} / {payload['tier']} / {expiry}")
 
 
 if __name__ == "__main__":
