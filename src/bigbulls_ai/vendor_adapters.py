@@ -7,10 +7,8 @@ from __future__ import annotations
 
 import json
 import os
-import urllib.error
-import urllib.parse
-import urllib.request
 from datetime import UTC, datetime
+from urllib import error, parse, request
 from zoneinfo import ZoneInfo
 
 from bigbulls_ai.integrations import BrokerOrderResult
@@ -47,22 +45,24 @@ class TradingEconomicsCalendar:
         self.timezone = ZoneInfo(naive_timezone or os.getenv("TRADING_ECONOMICS_NAIVE_TIMEZONE", "UTC"))
 
     def fetch_events(self, since: datetime, until: datetime) -> list[NewsEvent]:
+        if not isinstance(since, datetime) or not isinstance(until, datetime):
+            raise TypeError("since and until must be datetime values")
         if since.tzinfo is None or until.tzinfo is None or until < since:
             raise ValueError("since/until must be ordered timezone-aware timestamps")
         start = since.astimezone(UTC).date().isoformat()
         end = until.astimezone(UTC).date().isoformat()
-        query = urllib.parse.urlencode({"c": self.api_key, "f": "json"})
+        query = parse.urlencode({"c": self.api_key, "f": "json"})
         url = (
             "https://api.tradingeconomics.com/calendar/country/All/"
             f"{start}/{end}?{query}"
         )
-        request = urllib.request.Request(
+        request = request.Request(
             url, headers={"Accept": "application/json", "User-Agent": "BIGBULLS-AI/0.1"}
         )
         try:
-            with urllib.request.urlopen(request, timeout=15) as response:
+            with request.urlopen(request, timeout=15) as response:
                 payload = json.loads(response.read().decode("utf-8"))
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+        except (error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             raise RuntimeError("Trading Economics calendar request failed") from exc
         if not isinstance(payload, list):
             raise RuntimeError("Unexpected Trading Economics calendar response")
