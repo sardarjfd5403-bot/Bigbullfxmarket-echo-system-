@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -27,9 +27,9 @@ def test_candle_requires_timezone_aware_timestamp():
 
 
 def test_candle_validates_ohlc_and_volume_provenance():
-    candle = Candle("EURUSD", "M5", datetime(2026, 1, 1, tzinfo=timezone.utc),
+    candle = Candle("EURUSD", "M5", datetime(2026, 1, 1, tzinfo=UTC),
                     1.1, 1.2, 1.0, 1.15, 120, "tick", "demo")
-    assert candle.timestamp_utc.tzinfo == timezone.utc
+    assert candle.timestamp_utc.tzinfo == UTC
     with pytest.raises(ValueError):
-        Candle("EURUSD", "M5", datetime(2026, 1, 1, tzinfo=timezone.utc),
+        Candle("EURUSD", "M5", datetime(2026, 1, 1, tzinfo=UTC),
                1.1, 1.05, 1.0, 1.15, 120)
