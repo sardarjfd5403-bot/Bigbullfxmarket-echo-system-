@@ -1,13 +1,12 @@
 """Continuous observe/wait/confirm supervisor; paper execution only."""
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Sequence
 
 from bigbulls_ai.execution_gate import ExecutionAssessment, MarketConditions, assess_execution_readiness
 from bigbulls_ai.integrations import DemoBroker, NewsInterpreter, NewsProvider, TickDataProvider
-from bigbulls_ai.news import NewsEvent
 from bigbulls_ai.risk import TradeProposal
 
 
