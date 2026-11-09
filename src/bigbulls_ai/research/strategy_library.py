@@ -102,7 +102,12 @@ def support_resistance(candles: Sequence[Candle], lookback: int = 50) -> tuple[f
 def evaluate_strategy_families(candles: Sequence[Candle]) -> tuple[StrategySignal, ...]:
     """Evaluate every enabled candle-derived family in one pass."""
     from bigbulls_ai.research.indicators import ema, rsi
-    from bigbulls_ai.research.strategies import build_signals, candle_pattern, market_structure, vsa_read
+    from bigbulls_ai.research.strategies import (
+        build_signals,
+        candle_pattern,
+        market_structure,
+        vsa_read,
+    )
 
     closes = [c.close for c in candles]
     fast, slow = ema(closes, 20), ema(closes, 50)
