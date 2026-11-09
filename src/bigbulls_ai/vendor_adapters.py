@@ -56,7 +56,7 @@ class TradingEconomicsCalendar:
             "https://api.tradingeconomics.com/calendar/country/All/"
             f"{start}/{end}?{query}"
         )
-        request = request.Request(
+        http_request = request.Request(
             url,
             headers={
                 "Accept": "application/json",
@@ -65,7 +65,7 @@ class TradingEconomicsCalendar:
             },
         )
         try:
-            with request.urlopen(request, timeout=15) as response:
+            with request.urlopen(http_request, timeout=15) as response:
                 payload = json.loads(response.read().decode("utf-8"))
         except (error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             raise RuntimeError("Trading Economics calendar request failed") from exc
