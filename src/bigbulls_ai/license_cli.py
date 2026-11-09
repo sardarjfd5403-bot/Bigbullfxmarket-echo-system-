@@ -6,7 +6,7 @@ import sqlite3
 from datetime import UTC, datetime
 from decimal import Decimal
 
-from bigbulls_ai.payments import verify_usdt_trc20_payment
+from bigbulls_ai.payments import BIGBULLS_RECEIVING_WALLET, verify_usdt_trc20_payment
 from bigbulls_ai.licensing import generate_keypair, issue_license, verify_license
 
 
@@ -26,7 +26,6 @@ def main() -> None:
     issue.add_argument("--features", default="")
     fulfill = commands.add_parser("fulfill", help="Verify a USDT TRC20 payment and issue a lifetime license")
     fulfill.add_argument("--txid", required=True)
-    fulfill.add_argument("--wallet", required=True)
     fulfill.add_argument("--amount", default="199")
     fulfill.add_argument("--confirmations", type=int, default=20)
     fulfill.add_argument("--private-key", required=True)
@@ -54,7 +53,7 @@ def main() -> None:
         print(f"Issued {data['payload']['tier']} license for {data['payload']['customer_id']} — {expiry}")
     elif args.command == "fulfill":
         payment = verify_usdt_trc20_payment(
-            args.txid, args.wallet, Decimal(args.amount), args.confirmations
+            args.txid, BIGBULLS_RECEIVING_WALLET, Decimal(args.amount), args.confirmations
         )
         with sqlite3.connect(args.ledger) as ledger:
             ledger.execute(
