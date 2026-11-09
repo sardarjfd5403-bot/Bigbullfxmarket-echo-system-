@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime
+import sqlite3
+from datetime import UTC, datetime
 from decimal import Decimal
 
 from bigbulls_ai.payments import verify_usdt_trc20_payment
@@ -30,6 +31,7 @@ def main() -> None:
     fulfill.add_argument("--confirmations", type=int, default=20)
     fulfill.add_argument("--private-key", required=True)
     fulfill.add_argument("--output", required=True)
+    fulfill.add_argument("--ledger", required=True, help="Local SQLite ledger to prevent duplicate transaction fulfillment")
     fulfill.add_argument("--customer-id", required=True)
     fulfill.add_argument("--tier", default="full")
     fulfill.add_argument("--device-id")
@@ -54,11 +56,27 @@ def main() -> None:
         payment = verify_usdt_trc20_payment(
             args.txid, args.wallet, Decimal(args.amount), args.confirmations
         )
-        data = issue_license(
-            args.private_key, args.output, args.customer_id, args.tier,
-            None, args.device_id,
-            [item.strip() for item in args.features.split(",") if item.strip()],
-        )
+        with sqlite3.connect(args.ledger) as ledger:
+            ledger.execute(
+                "CREATE TABLE IF NOT EXISTS fulfilled_payments ("
+                "txid TEXT PRIMARY KEY, customer_id TEXT NOT NULL, "
+                "license_path TEXT NOT NULL, verified_at TEXT NOT NULL)"
+            )
+            ledger.execute("BEGIN IMMEDIATE")
+            try:
+                ledger.execute(
+                    "INSERT INTO fulfilled_payments VALUES (?, ?, ?, ?)",
+                    (payment.txid, args.customer_id, args.output, datetime.now(UTC).isoformat()),
+                )
+                data = issue_license(
+                    args.private_key, args.output, args.customer_id, args.tier,
+                    None, args.device_id,
+                    [item.strip() for item in args.features.split(",") if item.strip()],
+                )
+                ledger.commit()
+            except Exception:
+                ledger.rollback()
+                raise
         print(
             f"PAYMENT VERIFIED: {payment.amount_usdt} USDT / "
             f"{payment.confirmations} confirmations / tx {payment.txid}"
