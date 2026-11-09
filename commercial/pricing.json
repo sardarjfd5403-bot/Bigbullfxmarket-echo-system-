@@ -26,7 +26,7 @@
     "accepted_asset": "USDT",
     "network": "TRON (TRC20) ONLY",
     "amount_usdt": 199,
-    "wallet_address": "TO_BE_PROVIDED_BEFORE_PUBLIC_LAUNCH",
+    "wallet_address": "TGHzwHhJ1XULyUmf6B8zf4djkyoeh6eiYY",
     "payment_review": "MANUAL",
     "customer_must_submit": "transaction_hash_and_payment_screenshot",
     "verification_rule": "Independently verify the on-chain transaction; a screenshot alone is not proof of payment.",
