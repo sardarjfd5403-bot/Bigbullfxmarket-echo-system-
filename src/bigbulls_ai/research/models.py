@@ -38,3 +38,5 @@ class AnalysisReport:
     overall_bias: str
     overall_score: float
     warnings: tuple[str, ...]
+    trade_decision: str = "NO_TRADE"
+    decision_reasons: tuple[str, ...] = ()
