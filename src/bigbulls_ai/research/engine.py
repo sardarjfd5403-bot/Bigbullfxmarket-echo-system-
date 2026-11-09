@@ -6,11 +6,18 @@ from bigbulls_ai.market_data.models import Candle
 from bigbulls_ai.market_data.quality import validate_candle_batch
 from bigbulls_ai.research.indicators import atr, ema, realized_volatility, rsi
 from bigbulls_ai.research.models import AnalysisReport, TimeframeAnalysis
-from bigbulls_ai.research.strategies import build_signals, candle_pattern, market_structure, vsa_read
+from bigbulls_ai.research.strategies import (
+    build_signals,
+    candle_pattern,
+    market_structure,
+    vsa_read,
+)
 from bigbulls_ai.research.timeframes import TIMEFRAME_SECONDS
 
 
-def analyze_timeframes(data: Mapping[str, Sequence[Candle]], symbol: str | None = None) -> AnalysisReport:
+def analyze_timeframes(
+    data: Mapping[str, Sequence[Candle]], symbol: str | None = None
+) -> AnalysisReport:
     """Analyze every supplied timeframe; missing provider intervals are never fabricated."""
     analyses: list[TimeframeAnalysis] = []
     warnings: list[str] = []
@@ -18,14 +25,18 @@ def analyze_timeframes(data: Mapping[str, Sequence[Candle]], symbol: str | None 
     resolved_symbol = (symbol or (next(iter(symbols)) if len(symbols) == 1 else "UNKNOWN")).upper()
     if len(symbols) > 1:
         warnings.append("Input contains multiple symbols; analysis is separated by caller responsibility")
-    for timeframe, rows in sorted(data.items(), key=lambda item: TIMEFRAME_SECONDS.get(item[0].lower(), 10**12)):
+    ordered_data = sorted(
+        data.items(), key=lambda item: TIMEFRAME_SECONDS.get(item[0].lower(), 10**12)
+    )
+    for timeframe, rows in ordered_data:
         if timeframe.lower() not in TIMEFRAME_SECONDS:
             warnings.append(f"Unsupported timeframe skipped: {timeframe}")
             continue
         if not rows:
             warnings.append(f"No candles supplied for {timeframe}")
             continue
-        report = validate_candle_batch(rows, expected_symbol=resolved_symbol if resolved_symbol != "UNKNOWN" else None)
+        expected = resolved_symbol if resolved_symbol != "UNKNOWN" else None
+        report = validate_candle_batch(rows, expected_symbol=expected)
         if not report.accepted:
             warnings.append(f"{timeframe} rejected: {'; '.join(report.errors)}")
             continue
