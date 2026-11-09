@@ -40,13 +40,13 @@ def issue_license(
     output_path: str | Path,
     customer_id: str,
     tier: str,
-    expires_at: datetime,
+    expires_at: datetime | None = None,
     device_id: str | None = None,
     features: list[str] | None = None,
 ) -> dict[str, Any]:
     if not customer_id.strip() or not tier.strip():
         raise ValueError("customer_id and tier are required")
-    if expires_at.tzinfo is None:
+    if expires_at is not None and expires_at.tzinfo is None:
         raise ValueError("expires_at must be timezone-aware")
     private_key = serialization.load_pem_private_key(
         Path(private_key_path).read_bytes(), password=None
@@ -58,7 +58,7 @@ def issue_license(
         "customer_id": customer_id.strip(),
         "tier": tier.strip().lower(),
         "issued_at": datetime.now(UTC).isoformat(),
-        "expires_at": expires_at.astimezone(UTC).isoformat(),
+        "expires_at": expires_at.astimezone(UTC).isoformat() if expires_at else None,
         "device_id": device_id.strip() if device_id else None,
         "features": sorted(set(features or [])),
     }
@@ -94,12 +94,14 @@ def verify_license(
         raise ValueError("License signature is invalid") from exc
     if payload.get("product") != PRODUCT_ID:
         raise ValueError("License is for a different product")
-    expires_at = datetime.fromisoformat(str(payload["expires_at"]))
-    current = now or datetime.now(UTC)
-    if current.tzinfo is None:
-        raise ValueError("now must be timezone-aware")
-    if expires_at <= current.astimezone(UTC):
-        raise ValueError("License has expired")
+    expiry_value = payload.get("expires_at")
+    if expiry_value is not None:
+        expires_at = datetime.fromisoformat(str(expiry_value))
+        current = now or datetime.now(UTC)
+        if current.tzinfo is None:
+            raise ValueError("now must be timezone-aware")
+        if expires_at <= current.astimezone(UTC):
+            raise ValueError("License has expired")
     if payload.get("device_id") and payload["device_id"] != device_id:
         raise ValueError("License is bound to a different device")
     return payload
