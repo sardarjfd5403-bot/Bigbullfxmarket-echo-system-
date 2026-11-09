@@ -10,11 +10,11 @@ NOW = datetime(2026, 11, 9, 12, 0, tzinfo=UTC)
 
 
 def event(**kwargs):
-    values = dict(
-        event_id="us-cpi-1", title="US CPI", currency="USD",
-        scheduled_at=NOW, published_at=NOW, impact="high",
-        actual=3.1, forecast=3.0, previous=2.9, source="test",
-    )
+    values = {
+        "event_id": "us-cpi-1", "title": "US CPI", "currency": "USD",
+        "scheduled_at": NOW, "published_at": NOW, "impact": "high",
+        "actual": 3.1, "forecast": 3.0, "previous": 2.9, "source": "test",
+    }
     values.update(kwargs)
     return NewsEvent(**values)
 
@@ -45,14 +45,14 @@ def test_naive_news_timestamp_rejected():
 
 
 def valid_conditions(**kwargs):
-    values = dict(
-        observed_at=NOW, spread_bps=1.0, estimated_slippage_bps=1.0,
-        current_bar_range_atr=1.2, seconds_since_high_impact_release=90,
-        price_confirmation=True, multi_timeframe_confirmation=True,
-        volume_confirmation=True, calibrated_probability=0.92,
-        calibration_valid=True, validation_sample_size=1000,
-        model_validation_date=NOW - timedelta(days=2), news_direction_confirmed=True,
-    )
+    values = {
+        "observed_at": NOW, "spread_bps": 1.0, "estimated_slippage_bps": 1.0,
+        "current_bar_range_atr": 1.2, "seconds_since_high_impact_release": 90,
+        "price_confirmation": True, "multi_timeframe_confirmation": True,
+        "volume_confirmation": True, "calibrated_probability": 0.92,
+        "calibration_valid": True, "validation_sample_size": 1000,
+        "model_validation_date": NOW - timedelta(days=2), "news_direction_confirmed": True,
+    }
     values.update(kwargs)
     return MarketConditions(**values)
 
