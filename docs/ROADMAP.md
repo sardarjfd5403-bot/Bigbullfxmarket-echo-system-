@@ -23,8 +23,8 @@
 - [x] Basic range breakout / market-structure detection
 - [x] VSA-style volume/spread analysis with volume-unit safeguards
 - [x] Per-timeframe signals and combined confluence report
-- [ ] SMC/ICT rules: liquidity sweeps, equal highs/lows, FVG, order blocks, premium/discount
-- [ ] Session levels, VWAP, support/resistance and multi-session context
+- [x] Initial SMC/ICT-inspired rules: liquidity sweeps, equal highs/lows, FVG, order-block candidates
+- [x] Rolling VWAP context and support/resistance; [ ] session levels and multi-session context
 - [ ] Fundamental/news sentiment features and economic calendar integration
 - [ ] Regime classification and feature research
 
