@@ -1,37 +1,31 @@
 {
   "product": "BIGBULLS AI",
   "currency": "USD",
-  "status": "proposed_launch_pricing",
-  "tiers": [
-    {
-      "id": "starter",
-      "name": "Starter",
-      "monthly": 19,
-      "annual": 190,
-      "device_limit": 1,
-      "features": ["multi_strategy_analysis", "risk_engine", "paper_trading", "basic_dashboard"]
-    },
-    {
-      "id": "pro",
-      "name": "Pro",
-      "monthly": 49,
-      "annual": 490,
-      "device_limit": 2,
-      "features": ["starter_all", "advanced_backtesting", "news_context", "advanced_logs", "alerts"]
-    },
-    {
-      "id": "desk",
-      "name": "Desk",
-      "monthly": 149,
-      "annual": 1490,
-      "device_limit": 5,
-      "features": ["pro_all", "multi_user_workspaces", "portfolio_monitoring", "priority_support"]
-    }
-  ],
+  "status": "proposed_one_time_launch_pricing",
+  "offer": {
+    "id": "full_package",
+    "name": "BIGBULLS AI Full Package",
+    "one_time_price": 199,
+    "billing": "one_time_payment",
+    "license_type": "perpetual",
+    "access": "all_features_in_the_purchased_release",
+    "included_modules": [
+      "free_news_and_market_data_integrations",
+      "multi_strategy_analysis",
+      "risk_engine",
+      "historical_backtesting_with_spread_and_slippage",
+      "automated_paper_trading",
+      "monitoring_dashboard",
+      "logs_and_alerts",
+      "emergency_stop",
+      "installation_package",
+      "license_activation_and_verification"
+    ]
+  },
   "commercial_rules": {
-    "trial_days": 7,
-    "annual_discount_months": 2,
+    "subscription_required": false,
     "live_broker_execution": "not_included_until_separately_validated_and_enabled",
-    "performance_guarantee": false
+    "performance_guarantee": false,
+    "future_major_version_upgrades": "not_specified"
   }
 }
