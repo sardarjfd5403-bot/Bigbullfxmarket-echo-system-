@@ -31,3 +31,20 @@ The repository contains a TRON mainnet USDT TRC20 verifier in `src/bigbulls_ai/p
 
 ## Release gate
 Do not announce automated payment-to-download fulfillment as live until the hosted backend, database, secret storage, private package bucket, email delivery and end-to-end tests are deployed. Until then, process orders manually: independently verify on-chain payment, issue the license from a protected machine, and send a one-time private link.
+
+## Local operator command (implemented)
+After installing the package, an authorized operator can verify a transaction and issue a signed lifetime license in one command. The SQLite ledger prevents the same transaction hash from being fulfilled twice on that operator machine:
+
+```bash
+bigbulls-license fulfill \
+  --txid CUSTOMER_TRANSACTION_HASH \
+  --wallet TGHzwHhJ1XULyUmf6B8zf4djkyoeh6eiYY \
+  --amount 199 \
+  --confirmations 20 \
+  --private-key /secure/vendor-private.pem \
+  --output ./issued/customer-001.license.json \
+  --customer-id customer-001 \
+  --ledger ./private-fulfillment.sqlite
+```
+
+Set `TRONGRID_API_KEY` in the server/operator environment where available. Keep the SQLite ledger and license files private and backed up. This is a local operator workflow, not yet a hosted customer portal. It does not itself email customers or mint storage download links. For a distributed multi-operator service, move the unique txid constraint into a shared transactional database before launch.
