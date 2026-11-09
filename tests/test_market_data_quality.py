@@ -1,11 +1,11 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from bigbulls_ai.market_data.models import Candle
 from bigbulls_ai.market_data.quality import validate_candle_batch
 
 
 def candle(minute: int, symbol: str = "EURUSD") -> Candle:
-    return Candle(symbol, "M1", datetime(2026, 1, 1, tzinfo=timezone.utc) + timedelta(minutes=minute),
+    return Candle(symbol, "M1", datetime(2026, 1, 1, tzinfo=UTC) + timedelta(minutes=minute),
                   1.1, 1.2, 1.0, 1.15, 100, "tick", "test-provider")
 
 
