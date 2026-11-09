@@ -1,6 +1,7 @@
 """Small dependency-free indicator primitives used for reproducible research."""
 
 from collections.abc import Sequence
+from itertools import pairwise
 from math import sqrt
 
 from bigbulls_ai.market_data.models import Candle
@@ -42,7 +43,7 @@ def atr(candles: Sequence[Candle], period: int = 14) -> float | None:
     if len(candles) <= period:
         return None
     ranges = []
-    for previous, current in zip(candles, candles[1:]):
+    for previous, current in pairwise(candles):
         ranges.append(max(current.high - current.low,
                           abs(current.high - previous.close),
                           abs(current.low - previous.close)))
