@@ -22,6 +22,18 @@
       "license_activation_and_verification"
     ]
   },
+  "payment": {
+    "accepted_asset": "USDT",
+    "network": "TRON (TRC20) ONLY",
+    "amount_usdt": 199,
+    "wallet_address": "TO_BE_PROVIDED_BEFORE_PUBLIC_LAUNCH",
+    "payment_review": "MANUAL",
+    "customer_must_submit": "transaction_hash_and_payment_screenshot",
+    "verification_rule": "Independently verify the on-chain transaction; a screenshot alone is not proof of payment.",
+    "fulfillment": "After successful verification, issue the customer's license and a unique, access-controlled downloadable package link.",
+    "download_link": "Do not publish a permanent public package URL; use a private release/storage location and a unique expiring or single-use customer link.",
+    "underpayment_or_wrong_network": "Do not fulfill; request a corrected payment."
+  },
   "commercial_rules": {
     "subscription_required": false,
     "live_broker_execution": "not_included_until_separately_validated_and_enabled",
