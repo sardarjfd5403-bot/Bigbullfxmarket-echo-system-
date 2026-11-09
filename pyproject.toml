@@ -8,10 +8,13 @@ version = "0.1.0"
 description = "Risk-controlled multi-asset trading intelligence research platform"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["cryptography>=42"]
+
+[project.scripts]
+bigbulls-license = "bigbulls_ai.license_cli:main"
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "ruff>=0.5", "mypy>=1.10"]
+dev = ["pytest>=8.0", "ruff>=0.5", "mypy>=1.10", "build>=1.2"]
 mt5 = ["MetaTrader5>=5.0.45; platform_system == \"Windows\""]
 
 [tool.setuptools.packages.find]
