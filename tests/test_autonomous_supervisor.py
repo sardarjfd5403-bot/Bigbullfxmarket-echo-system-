@@ -66,7 +66,7 @@ def test_supervisor_halts_if_account_is_not_demo():
 
 
 def test_supervisor_waits_when_no_confirmation():
-    now = datetime(2026, 11, 9, 12, tzinfo=timezone.utc)
+    now = datetime(2026, 11, 9, 12, tzinfo=UTC)
     broker = InMemoryDemoBroker()
     supervisor = AutonomousSupervisor(FakeNews(), FakeTicks(), FakeInterpreter(), broker)
     unsafe = conditions(now).__class__(
