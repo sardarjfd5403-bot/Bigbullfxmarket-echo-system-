@@ -33,7 +33,7 @@ def _parse_datetime(value: object) -> datetime | None:
     try:
         if len(text) == 16 and "T" in text and text.endswith("Z"):
             return datetime.strptime(text, "%Y%m%dT%H%M%SZ").replace(tzinfo=UTC)
-        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(text)
         if parsed.tzinfo is None:
             return parsed.replace(tzinfo=UTC)
         return parsed.astimezone(UTC)
@@ -46,7 +46,7 @@ def _parse_datetime(value: object) -> datetime | None:
 
 
 def _event_id(source: str, url: str, title: str) -> str:
-    raw = f"{source}|{url}|{title}".encode("utf-8")
+    raw = f"{source}|{url}|{title}".encode()
     return hashlib.sha256(raw).hexdigest()[:24]
 
 
