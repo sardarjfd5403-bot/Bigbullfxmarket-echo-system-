@@ -2,7 +2,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from bigbulls_ai.news import NewsEvent, assess_news
+from bigbulls_ai.news import NewsEvent, assess_news, event_pair_bias
 from bigbulls_ai.execution_gate import MarketConditions, assess_execution_readiness
 
 
@@ -29,6 +29,8 @@ def test_news_positive_surprise_with_direction_metadata():
     result = assess_news(event(), higher_is_better=True)
     assert result.sentiment == "positive"
     assert result.tradeable_context
+    assert event_pair_bias(event(), result, "EUR", "USD") == "bearish"
+    assert event_pair_bias(event(), result, "USD", "JPY") == "bullish"
 
 
 def test_headline_without_numbers_is_not_trusted():
@@ -49,7 +51,7 @@ def valid_conditions(**kwargs):
         price_confirmation=True, multi_timeframe_confirmation=True,
         volume_confirmation=True, calibrated_probability=0.92,
         calibration_valid=True, validation_sample_size=1000,
-        model_validation_date=NOW - timedelta(days=2),
+        model_validation_date=NOW - timedelta(days=2), news_direction_confirmed=True,
     )
     values.update(kwargs)
     return MarketConditions(**values)
