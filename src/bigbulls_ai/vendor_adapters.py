@@ -3,7 +3,7 @@
 Secrets are read from environment variables. MT5 adapter imports its optional
 Windows-only package lazily and refuses non-demo accounts before order_send.
 """
- # ruff: noqa: I001
+# ruff: noqa: I001
 from __future__ import annotations
 
 import json
