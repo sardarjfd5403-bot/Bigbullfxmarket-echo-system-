@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Protocol, Sequence
 
-from bigbulls_ai.market_data.models import MarketBar, MarketTick
+from bigbulls_ai.market_data.models import Candle, MarketTick
 from bigbulls_ai.news import NewsEvent
 from bigbulls_ai.risk import TradeProposal
 
@@ -68,6 +68,6 @@ class DemoBroker(Protocol):
 
 
 class HistoricalDataStore(Protocol):
-    def bars(self, symbol: str, start: datetime, end: datetime) -> Sequence[MarketBar]: ...
+    def bars(self, symbol: str, start: datetime, end: datetime) -> Sequence[Candle]: ...
 
     def news(self, start: datetime, end: datetime) -> Sequence[NewsEvent]: ...
