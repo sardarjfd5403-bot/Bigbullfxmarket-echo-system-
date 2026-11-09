@@ -6,12 +6,8 @@ from bigbulls_ai.market_data.models import Candle
 from bigbulls_ai.market_data.quality import validate_candle_batch
 from bigbulls_ai.research.indicators import atr, ema, realized_volatility, rsi
 from bigbulls_ai.research.models import AnalysisReport, TimeframeAnalysis
-from bigbulls_ai.research.strategies import (
-    build_signals,
-    candle_pattern,
-    market_structure,
-    vsa_read,
-)
+from bigbulls_ai.research.strategies import candle_pattern, market_structure, vsa_read
+from bigbulls_ai.research.strategy_library import evaluate_strategy_families
 from bigbulls_ai.research.timeframes import TIMEFRAME_SECONDS
 
 
@@ -50,7 +46,7 @@ def analyze_timeframes(
         structure = market_structure(rows)
         pattern = candle_pattern(rows)
         vsa, vsa_warnings = vsa_read(rows)
-        signals = build_signals(trend, structure, pattern, vsa, rsi_value)
+        signals = evaluate_strategy_families(rows)
         score = sum(signal.score for signal in signals)
         normalized = max(-1.0, min(1.0, score / 4.0))
         local_warnings = list(vsa_warnings)
